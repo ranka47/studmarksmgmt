@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 #include "BasicExcel1.h"
-#include <stdafx.h>
+#include <afx.h>
 
 #define COURSE_FILE "courses.xls"
 #define PEOPLE_FILE "people.xls"

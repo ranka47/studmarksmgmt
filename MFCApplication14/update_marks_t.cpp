@@ -35,9 +35,21 @@ update_marks_t::~update_marks_t()
 
 void update_marks_t::DoDataExchange(CDataExchange* pDX)
 {
+	extern long long int roll_number;
 	CDialogEx::DoDataExchange(pDX);
 	DDX_CBString(pDX, IDC_COMBO1, course);
 	DDX_CBIndex(pDX, IDC_COMBO2, exam);
+	CComboBox *Majors = (CComboBox*)GetDlgItem(IDC_COMBO1);
+	DatabaseWrapper *db = new DatabaseWrapper();
+	int size; Course* courses = db->getCourses(roll_number, Person::PROF, &size);
+	
+	for (size_t i = 0; i < size; i++)
+	{
+		CString temp(courses[i].courseName.c_str());
+		Majors->AddString(temp);
+	}
+
+	
 }
 
 
@@ -45,6 +57,7 @@ BEGIN_MESSAGE_MAP(update_marks_t, CDialogEx)
 	ON_BN_CLICKED(IDUPLOAD, &update_marks_t::OnBnClickedUpload)
 	ON_BN_CLICKED(IDCHOOSEFILE, &update_marks_t::OnBnClickedChoosefile)
 	ON_CBN_SELCHANGE(IDC_COMBO1, &update_marks_t::OnCbnSelchangeCombo1)
+	ON_CBN_SELCHANGE(IDC_COMBO2, &update_marks_t::OnCbnSelchangeCombo2)
 END_MESSAGE_MAP()
 
 
@@ -147,7 +160,3 @@ void update_marks_t::OnBnClickedUpload()
 
 
 
-void update_marks_t::OnCbnSelchangeCombo1()
-{
-	// TODO: Add your control notification handler code here
-}

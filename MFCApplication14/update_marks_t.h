@@ -24,4 +24,5 @@ public:
 	CString course;
 	int exam;
 	afx_msg void OnCbnSelchangeCombo1();
+	afx_msg void OnCbnSelchangeCombo2();
 };

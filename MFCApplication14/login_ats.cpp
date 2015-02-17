@@ -21,6 +21,7 @@ bool login_allowed = FALSE;
 
 
 long long int roll_number;
+
 login_ats::login_ats(CWnd* pParent /*=NULL*/)
 	: CDialogEx(login_ats::IDD, pParent)
 	, admin(false)
@@ -76,12 +77,11 @@ void login_ats::OnBnClickedLogin()
 	UpdateData();
 	const TCHAR* pstring = (LPCTSTR)password_cstring;
 	UpdateData(FALSE);
-	roll_number = roll_id;
 	login_allowed = db->checkLogin(roll_id, password_cstring, type);
 
 	if (login_allowed == TRUE)
 	{		
-		//roll_number = roll_id;
+		roll_number = roll_id;
     		if (type == Person::ADMIN)
 		{
 			dashboard_a admin;
