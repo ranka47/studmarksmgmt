@@ -322,7 +322,7 @@ Course* DatabaseWrapper::getProfCourses(long long int identifier, int *size)
 {
 	BasicExcel excelFile;
 	excelFile.Load(PEOPLE_FILE);
-	BasicExcelWorksheet *sheet = excelFile.GetWorksheet(PROF_SHEET);
+	BasicExcelWorksheet *sheet = excelFile.GetWorksheet(STUDENT_SHEET);
 	if (!sheet) return NULL;
 	int found = -1;
 	for (size_t j = 0; j < sheet->GetTotalRows(); j++)

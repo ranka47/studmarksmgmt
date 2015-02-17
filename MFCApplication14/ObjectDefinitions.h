@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include "BasicExcel1.h"
+#include <stdafx.h>
 
 #define COURSE_FILE "courses.xls"
 #define PEOPLE_FILE "people.xls"
@@ -44,6 +45,7 @@ public:
 
 	//Course** getStudentCourses();
 	Student(string, long long int);
+	Student();
 };
 
 class Quiz
@@ -64,6 +66,7 @@ public:
 	int numQuiz;
 
 	Course(string, string, int);
+	Course();
 	//Prof* getCourseProfs(DatabaseWrapper*, int*);
 	Student* getCourseStudents(DatabaseWrapper*, int*);
 	//Quiz* getCourseQuizzes(DatabaseWrapper*, int*);
@@ -77,13 +80,19 @@ public:
 	DatabaseWrapper();
 	Course* createCourse(int numQuiz, string courseName, string courseId, int year);
 	Course* getCourseById(string courseId);
-	void getCourses(int id, Person personType, int *size, Course** courses);
-	bool addPerson(string, int, Person);
-	bool linkPersonCourse(int identifier, Person personType, string courseId);
+	Course* getCourses(long long int id, Person personType, int *size);
+	bool addPerson(string, long long int, Person);
+	bool linkPersonCourse(long long int identifier, Person personType, string courseId);
 	bool setQuizWeights(string courseId, int *weights);
 	int getQuizWeight(int quiznumber, string courseId);
-	bool setQuizMarks(string courseId, int identifier, int quizNumber, int marks);
-	int getStudQuizMarks(string courseId, int identifier, int quizNumber);
+	bool setQuizMarks(string courseId, long long int identifier, int quizNumber, int marks);
+	int getStudQuizMarks(string courseId, long long int identifier, int quizNumber);
 	Quiz *getQuizMarks(string courseId, int quizNumber);
-	void getCourseStudents(string courseId, int *size, Student** students);
+	Student* getCourseStudents(string courseId, int *size);
+	
+	bool addLoginDetails(long long int identifier, string password, Person personType);
+	bool checkLogin(long long int username, CString password, Person personType);
+	Course* getStudentCourses(long long int identifier, int *size);
+	Course* getProfCourses(long long int identifier, int *size);
+	string* getCourseList(int *size);
 };

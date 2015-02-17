@@ -26,6 +26,12 @@ Student::Student(string studentName, long long int rollNo)
 	this->studentRollNo = rollNo;
 }
 
+Student::Student()
+{
+	this->studentName = "";
+	this->studentRollNo = -1;
+}
+
 //Course** Prof::getProfCourses(int profId, DatabaseWrapper* db, int* size)
 //{
 //	return db->getCourses(profId, Person::PROF, size);
@@ -38,3 +44,9 @@ Course::Course(string courseName, string courseId, int numQuiz)
 	this->numQuiz = numQuiz;
 }
 
+Course::Course()
+{
+	this->courseName = "";
+	this->courseId = "";
+	this->numQuiz = -1;
+}

@@ -11,6 +11,8 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include "login_ats.h"
+#include "ObjectDefinitions.h"
 
 #define IDC_EDIT1
 using namespace YExcel;
@@ -19,6 +21,8 @@ using namespace YExcel;
 #define new DEBUG_NEW
 #endif
 // CAboutDlg dialog used for App About
+
+
 
 class CAboutDlg : public CDialogEx
 {
@@ -249,42 +253,6 @@ void CMFCApplication14Dlg::OnBnClickedButton1()
 	}
 	if (error == 0)
 	{
-
-		/*BasicExcel e;
-		e.New(2);
-		e.RenameWorksheet("Sheet1", "Test1");
-		BasicExcelWorksheet* sheet = e.GetWorksheet("Test1");
-		BasicExcelCell* cell;
-		if (sheet)
-		{
-			for (size_t c = 0; c < 4; ++c)
-			{
-				cell = sheet->Cell(0, c);
-				cell->Set((int)c);
-			}
-
-
-
-
-
-			sheet->Cell(4, 0)->SetInteger(rollno[0]);
-			sheet->Cell(4, 1)->SetInteger(rollno[1]);
-			sheet->Cell(5, 0)->SetInteger(marks[0]);
-			sheet->Cell(5, 1)->SetInteger(marks[1]);
-
-		}
-
-		sheet = e.AddWorksheet("Test2", 1);
-		sheet = e.GetWorksheet(1);
-		if (sheet)
-		{
-			sheet->Cell(1, 1)->SetDouble(1.1);
-			sheet->Cell(2, 2)->SetDouble(2.2);
-			sheet->Cell(3, 3)->SetDouble(3.3);
-			sheet->Cell(4, 4)->SetDouble(4.4);
-			sheet->Cell(70, 2)->SetDouble(5.5);
-		}
-		e.SaveAs("example4.xls");*/
 		BasicExcel test;
 		test.New(2);
 		test.RenameWorksheet("Sheet1", "Test1");
@@ -331,25 +299,37 @@ void CMFCApplication14Dlg::OnBnClickedButton1()
 
 void CMFCApplication14Dlg::OnBnClickedButton2()
 {
-	BasicExcel excelFile;
-	excelFile.AddWorksheet("CS203", -1);
-	BasicExcelWorksheet* curCourse = excelFile.GetWorksheet("CS203");
-	if (curCourse)
-	{
-		TRACE("curCourse name is %s", curCourse->GetAnsiSheetName());
-		curCourse->Cell(1, 1)->Set("coursename");
-		curCourse->Cell(2, 1)->Set("RollNo\\Quiz");
-		for (int i = 1; i <= 10; i++)
-		{
-		curCourse->Cell(1, i)->SetInteger(i);
-		}
-		excelFile.SaveAs("courses.xls");
-	}
-
-
-	for (int i = 0; i < 3; i++)
-		excelFile.AddWorksheet("CS204", -1);
-	excelFile.SaveAs("courses.xls");
-
+	/*DatabaseWrapper* db;
+	db = new DatabaseWrapper();
+	int quizWts[5] = { 20, 20, 20, 20, 20 };
+	db->createCourse(5, "Chemistry", "ch101", 2015);
+	db->createCourse(6, "Physics", "ph102", 2015);
+	db->addPerson("chatto", 101010, Person::PROF);
+	db->addPerson("jainam", 130101055, Person::STUDENT);
+	db->addPerson("admin", 1, Person::ADMIN);
+	db->addLoginDetails(1, "admin", Person::ADMIN);
+	db->addPerson("ranka", 130101033, Person::STUDENT);
+	db->linkPersonCourse(130101055, Person::STUDENT, "ch101");
+	db->linkPersonCourse(130101033, Person::STUDENT, "ph102");
+	db->linkPersonCourse(130101033, Person::STUDENT, "ch101");
+	db->linkPersonCourse(101010, Person::PROF, "ch101");
+	db->linkPersonCourse(101010, Person::PROF, "ph102");
+	db->addLoginDetails(101010, "prof", Person::PROF);
+	db->setQuizWeights("ch101", quizWts);
+	int a = db->getQuizWeight(3, "ch101");
+	db->setQuizMarks("ch101", 130101033, 3, 15);
+	db->setQuizMarks("ch101", 130101055, 3, 17);
+	Quiz *q = db->getQuizMarks("ch101", 3);
+	Student* st = NULL;
+	st = db->getCourseStudents("ch101", &a);
+	db->addLoginDetails(130101033, "yomanas", Person::STUDENT);*/
+	/*CString a("yomanas");
+	db->checkLogin(130101033, "yomanas", Person::STUDENT);
+	db->checkLogin(130101033, "yomanas", Person::STUDENT);
+	
+	Course *co = db->getStudentCourses(130101033, &a);
+	string *cs = db->getCourseList(&a);	*/
+	login_ats dlg;
+	dlg.DoModal();
 	// TODO: Add your control notification handler code here
 }

@@ -39,6 +39,39 @@
     <ClInclude Include="BasicExcel1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="update_marks_t.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="login_ats.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dashboard_t.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="add_faculty_a.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="add_student_a.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="result_s.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="view_marks_s.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="add_course_t.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="add_exam_t.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dashboard_a.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dashboard_s.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFCApplication14.cpp">
@@ -57,6 +90,39 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BasicExcel1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="update_marks_t.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="login_ats.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dashboard_t.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="add_faculty_a.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="add_student_a.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="result_s.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="view_marks_s.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="add_course_t.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="add_exam_t.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dashboard_a.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dashboard_s.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

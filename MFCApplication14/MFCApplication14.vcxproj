@@ -101,24 +101,46 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="add_course_t.h" />
+    <ClInclude Include="add_exam_t.h" />
+    <ClInclude Include="add_faculty_a.h" />
+    <ClInclude Include="add_student_a.h" />
     <ClInclude Include="BasicExcel1.h" />
+    <ClInclude Include="dashboard_a.h" />
+    <ClInclude Include="dashboard_s.h" />
+    <ClInclude Include="dashboard_t.h" />
+    <ClInclude Include="login_ats.h" />
     <ClInclude Include="MFCApplication14.h" />
     <ClInclude Include="MFCApplication14Dlg.h" />
     <ClInclude Include="ObjectDefinitions.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="result_s.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="update_marks_t.h" />
+    <ClInclude Include="view_marks_s.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="add_course_t.cpp" />
+    <ClCompile Include="add_exam_t.cpp" />
+    <ClCompile Include="add_faculty_a.cpp" />
+    <ClCompile Include="add_student_a.cpp" />
     <ClCompile Include="BasicExcel1.cpp" />
+    <ClCompile Include="dashboard_a.cpp" />
+    <ClCompile Include="dashboard_s.cpp" />
+    <ClCompile Include="dashboard_t.cpp" />
     <ClCompile Include="DatabaseWrapper.cpp" />
+    <ClCompile Include="login_ats.cpp" />
     <ClCompile Include="MFCApplication14.cpp" />
     <ClCompile Include="MFCApplication14Dlg.cpp" />
     <ClCompile Include="Objects.cpp" />
+    <ClCompile Include="result_s.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="update_marks_t.cpp" />
+    <ClCompile Include="view_marks_s.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MFCApplication14.rc" />
