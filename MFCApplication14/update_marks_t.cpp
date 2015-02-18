@@ -33,6 +33,17 @@ update_marks_t::~update_marks_t()
 {
 }
 
+static string ConvertToString(CString a)
+{
+	const size_t newsizew = (a.GetLength() + 1) * 2;
+	char *nstringw = new char[newsizew];
+	size_t convertedCharsw = 0;
+	wcstombs_s(&convertedCharsw, nstringw, newsizew, a, _TRUNCATE);
+	string t(nstringw);
+
+	return t;
+}
+
 void update_marks_t::DoDataExchange(CDataExchange* pDX)
 {
 	extern long long int roll_number;
@@ -45,10 +56,11 @@ void update_marks_t::DoDataExchange(CDataExchange* pDX)
 	
 	for (size_t i = 0; i < size; i++)
 	{
-		CString temp(courses[i].courseName.c_str());
+		CString temp(courses[i].courseId.c_str());
 		Majors->AddString(temp);
 	}
-
+	
+	
 	
 }
 
@@ -56,8 +68,9 @@ void update_marks_t::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(update_marks_t, CDialogEx)
 	ON_BN_CLICKED(IDUPLOAD, &update_marks_t::OnBnClickedUpload)
 	ON_BN_CLICKED(IDCHOOSEFILE, &update_marks_t::OnBnClickedChoosefile)
-	ON_CBN_SELCHANGE(IDC_COMBO1, &update_marks_t::OnCbnSelchangeCombo1)
+	ON_BN_CLICKED(IDC_BACK, &update_marks_t::OnBnClickedBack)
 	ON_CBN_SELCHANGE(IDC_COMBO2, &update_marks_t::OnCbnSelchangeCombo2)
+	ON_CBN_SELCHANGE(IDC_COMBO1, &update_marks_t::OnCbnSelchangeCombo1)
 END_MESSAGE_MAP()
 
 
@@ -160,3 +173,41 @@ void update_marks_t::OnBnClickedUpload()
 
 
 
+
+
+void update_marks_t::OnBnClickedBack()
+{
+	// TODO: Add your control notification handler code here
+	GetOwner()->ShowWindow(TRUE);
+}
+
+
+void update_marks_t::OnCbnSelchangeCombo2()
+{
+}
+
+
+void update_marks_t::OnCbnSelchangeCombo1()
+{
+	// TODO: Add your control notification handler code here
+	DatabaseWrapper *db = new DatabaseWrapper();
+	CComboBox *corid = (CComboBox*)GetDlgItem(IDC_COMBO1);
+	CComboBox *corid2 = (CComboBox*)GetDlgItem(IDC_COMBO2);
+	int selIndex = corid->GetCurSel();
+	CString name;
+	corid->GetLBText(selIndex, name);
+
+	int size2 = db->getNumberQuiz(ConvertToString(name));
+
+	//DatabaseWrapper *db = new DatabaseWrapper();
+	//	int size; Course* courses = db->getCourses(roll_number, Person::PROF, &size);
+
+	for (size_t i = 0; i < size2; i++)
+	{
+		CString temp;
+		temp.Format(_T("Quiz %d"), i + 1);
+		corid2->AddString(temp);
+	}
+	delete db;
+
+}

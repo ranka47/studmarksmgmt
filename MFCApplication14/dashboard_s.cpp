@@ -8,6 +8,7 @@
 #include "view_marks_s.h"
 #include "login_ats.h"
 #include "result_s.h"
+#include "ObjectDefinitions.h"
 
 // dashboard_s dialog
 
@@ -25,7 +26,23 @@ dashboard_s::~dashboard_s()
 
 void dashboard_s::DoDataExchange(CDataExchange* pDX)
 {
+	extern long long int roll_number;
 	CDialogEx::DoDataExchange(pDX);
+	CStatic *label;
+	label = new CStatic;
+	CString quizz;
+	quizz.Format(_T("%ld"),roll_number);
+	label->Create(quizz, WS_CHILD | WS_VISIBLE, CRect( 180, 20,280,80), this, 90210);
+	CComboBox *Majors = (CComboBox*)GetDlgItem(IDC_COMBO1);
+	DatabaseWrapper *db = new DatabaseWrapper();
+	int size; Course* courses = db->getCourses(roll_number, Person::STUDENT, &size);
+
+	for (size_t i = 0; i < size; i++)
+	{
+		CString temp(courses[i].courseId.c_str());
+		Majors->AddString(temp);
+	}
+	
 }
 
 
@@ -44,6 +61,7 @@ void dashboard_s::OnBnClickedLogout()
 	// TODO: Add your control notification handler code here
 	login_ats dlg;
 	dlg.DoModal();
+	EndDialog(0);
 }
 
 
@@ -58,6 +76,7 @@ void dashboard_s::OnBnClickedView()
 void dashboard_s::OnBnClickedResult()
 {
 	// TODO: Add your control notification handler code here
-	result_s dlg;
-	dlg.DoModal();
+	//result_s dlg;
+	//dlg.DoModal();
+	AfxMessageBox(_T("The feature has not been added yet!"));
 }

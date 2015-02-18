@@ -23,6 +23,8 @@ public:
 	afx_msg void OnBnClickedChoosefile();
 	CString course;
 	int exam;
-	afx_msg void OnCbnSelchangeCombo1();
+
+	afx_msg void OnBnClickedBack();
 	afx_msg void OnCbnSelchangeCombo2();
+	afx_msg void OnCbnSelchangeCombo1();
 };

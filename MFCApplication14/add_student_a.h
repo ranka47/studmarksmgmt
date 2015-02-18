@@ -18,4 +18,8 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
+public:
+	CString studentname;
+	LONGLONG studentid;
+	afx_msg void OnBnClickedOk();
 };

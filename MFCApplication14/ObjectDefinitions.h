@@ -89,7 +89,7 @@ public:
 	int getStudQuizMarks(string courseId, long long int identifier, int quizNumber);
 	Quiz *getQuizMarks(string courseId, int quizNumber);
 	Student* getCourseStudents(string courseId, int *size);
-	
+	int DatabaseWrapper::getNumberQuiz(string);
 	bool addLoginDetails(long long int identifier, string password, Person personType);
 	bool checkLogin(long long int username, CString password, Person personType);
 	Course* getStudentCourses(long long int identifier, int *size);

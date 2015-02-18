@@ -48,6 +48,7 @@ void dashboard_a::OnBnClickedFaculty()
 	// TODO: Add your control notification handler code here
 	add_faculty_a dlg;
 	dlg.DoModal();
+	GetOwner()->ShowWindow(FALSE);
 }
 
 
@@ -56,6 +57,7 @@ void dashboard_a::OnBnClickedStudent()
 	// TODO: Add your control notification handler code here
 	add_student_a dlg;
 	dlg.DoModal();
+	GetOwner()->ShowWindow(FALSE);
 }
 
 

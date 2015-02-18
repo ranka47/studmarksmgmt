@@ -44,6 +44,8 @@ void dashboard_t::OnBnClickedUpdate()
 	// TODO: Add your control notification handler code here
 	update_marks_t dlg;
 	dlg.DoModal();
+	GetOwner()->ShowWindow(FALSE);
+
 }
 
 

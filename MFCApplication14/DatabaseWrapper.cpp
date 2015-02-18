@@ -344,6 +344,15 @@ Course* DatabaseWrapper::getProfCourses(long long int identifier, int *size)
 	return cs;
 }
 
+int DatabaseWrapper::getNumberQuiz(string courseId)
+{
+	BasicExcel excelFile;
+	excelFile.Load(COURSE_FILE);
+	BasicExcelWorksheet *sheet = excelFile.GetWorksheet(courseId.c_str());
+	if (!sheet) return -1;
+	if (sheet->Cell(0, 4)->Type() != BasicExcelCell::INT) return -1;
+	return sheet->Cell(0, 4)->GetInteger();
+}
 
 string* DatabaseWrapper::getCourseList(int *size)
 {

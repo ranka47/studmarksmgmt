@@ -11,7 +11,10 @@
 // add_course_t dialog
 
 IMPLEMENT_DYNAMIC(add_course_t, CDialogEx)
-
+int glob[16];
+CEdit* pEdit[15];
+// CAboutDlg dialog used for App About
+CString str[16][5];
 add_course_t::add_course_t(CWnd* pParent /*=NULL*/)
 	: CDialogEx(add_course_t::IDD, pParent)
 	, no_of_exams(0)
@@ -49,12 +52,49 @@ void add_course_t::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
 	CDialogEx::OnOK();
+	UpdateData();
+	int noquiz = no_of_exams;
+	CString cname = coursename;
+	CString cid = coursenumber;
+	int quizzes = noquiz;
+	int i;
+	for (size_t i = 0; i < quizzes; i++)
+	{
+		pEdit[i]->GetWindowText(*str[i]);
+	}
+	UpdateData(FALSE);
+	//pEdit[0]->GetWindowText(str);
+	//result = str;
 }
 
 
 void add_course_t::OnBnClickedButton1()
 {
 	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	int noquiz = no_of_exams;
+	CString cname = coursename;
+	CString cid = coursenumber;
+	int quizzes = noquiz;
+	int left = 200, top = 280, right = 260, bottom = 300, origtop = top, origbot = bottom;
+
+	for (int i = 0; i < quizzes; i++){
+
+		if (i == 8){
+			left = left + 200;	top = origtop; bottom = origbot; right = right + 200;
+		}
+		pEdit[i] = new CEdit();
+		pEdit[i]->Create(ES_MULTILINE | WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_BORDER, CRect(left, top, right, bottom), this, i);
+		//glo[i] = this.i;
+		CStatic *label;
+		label = new CStatic;
+		CString quizz;
+		quizz.Format(_T("Quiz %d"), i + 1);
+		label->Create(quizz, WS_CHILD | WS_VISIBLE, CRect(left - 60, top, right - 60, bottom), this, 90210);
+		top += 25;	bottom += 25;
+	}
+	UpdateData(FALSE);
+
 }
 
 static string ConvertToString(CString a)
@@ -82,6 +122,5 @@ void add_course_t::OnBnClickedButton2()
 	UpdateData(FALSE);
 	DatabaseWrapper *db = new DatabaseWrapper();
 	db->createCourse(noquiz, t1, t2, 2015);
-
-
+	
 }
