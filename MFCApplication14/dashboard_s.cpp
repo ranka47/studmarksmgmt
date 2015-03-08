@@ -32,7 +32,7 @@ void dashboard_s::DoDataExchange(CDataExchange* pDX)
 	label = new CStatic;
 	CString quizz;
 	quizz.Format(_T("%ld"),roll_number);
-	label->Create(quizz, WS_CHILD | WS_VISIBLE, CRect( 180, 20,280,80), this, 90210);
+	label->Create(quizz, WS_CHILD | WS_VISIBLE, CRect( 120, 20,220,60), this, 90210);
 	CComboBox *Majors = (CComboBox*)GetDlgItem(IDC_COMBO1);
 	DatabaseWrapper *db = new DatabaseWrapper();
 	int size; Course* courses = db->getCourses(roll_number, Person::STUDENT, &size);
@@ -59,8 +59,6 @@ END_MESSAGE_MAP()
 void dashboard_s::OnBnClickedLogout()
 {
 	// TODO: Add your control notification handler code here
-	login_ats dlg;
-	dlg.DoModal();
 	EndDialog(0);
 }
 

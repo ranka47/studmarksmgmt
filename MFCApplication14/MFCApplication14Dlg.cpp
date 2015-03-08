@@ -38,6 +38,8 @@ public:
 // Implementation
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedOk();
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(CAboutDlg::IDD)
@@ -50,6 +52,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+	ON_BN_CLICKED(IDOK, &CAboutDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
@@ -78,6 +81,7 @@ BEGIN_MESSAGE_MAP(CMFCApplication14Dlg, CDialogEx)
 
 	
 	ON_BN_CLICKED(IDC_BUTTON2, &CMFCApplication14Dlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON3, &CMFCApplication14Dlg::OnBnClickedButton3)
 END_MESSAGE_MAP()
 
 
@@ -170,129 +174,7 @@ HCURSOR CMFCApplication14Dlg::OnQueryDragIcon()
 void CMFCApplication14Dlg::OnBnClickedButton1()
 {
 	// TODO: Add your control notification handler code here
-	TCHAR filtri[] = _T("CSV files (*.csv)|*.csv||");
-	CString path;
-
-	CFileDialog dlg(TRUE, _T("csv"), _T("*.csv"), OFN_FILEMUSTEXIST | OFN_HIDEREADONLY, filtri);
-	dlg.m_ofn.lpstrTitle = _T("Open...");
-
-	if (dlg.DoModal() == IDOK) //OK
-	{
-		path = dlg.GetPathName();
-		//
-		CStdioFile readFile;
-		CFileException fileException;
-		CString strLine;
-
-		if (readFile.Open(path, CFile::modeRead, &fileException))
-		{
-			while (readFile.ReadString(strLine))
-			{
-				MessageBox(path);
-			}
-		}
-		else
-		{
-			CString strErrorMsg;
-			strErrorMsg.Format(_T("Can't open file %s , error : %u"), path, fileException.m_cause);
-			AfxMessageBox(strErrorMsg);
-		}
-		readFile.Close();
-	}
-	ifstream in(path);
-
-	string line, field;
-
-	vector<long long int > rollno;  // the 2D array
-	vector<int> marks;                // array of values for one line only
-	int i; int error = 0;
-	while (getline(in, line))    // get next line in file
-	{
-		i = 0;
-		stringstream ss(line);
-
-		while (getline(ss, field, ','))  // break line into comma delimitted fields
-		{
-			if (field != "")
-			{
-				if (i == 0)
-				{
-					int temp1;
-					stringstream(field) >> temp1;
-					rollno.push_back(temp1);  // add each field to the 1D array
-					i = i + 1;
-					IDC_EDIT1
-					/*cout << temp1 << "\n";*/
-				}
-				else if (i == 1)
-				{
-					int temp2;
-					stringstream(field) >> temp2;
-					marks.push_back(temp2);  // add each field to the 1D array
-					i = i + 1;
-					
-					/*cout << temp2 << endl;*/
-				}
-				else
-				{
-					error = 1;
-					AfxMessageBox(_T("Sorry!!File is in wrong format..Please Re-Upload"));
-				}
-				//error
-
-			}
-			else
-			{
-				error = 1;
-				AfxMessageBox(_T("Sorry!!File is in wrong format..Please Re-Upload"));
-			}
-			//error
-		}
-
-
-	}
-	if (error == 0)
-	{
-		BasicExcel test;
-		test.New(2);
-		test.RenameWorksheet("Sheet1", "Test1");
-		BasicExcelWorksheet* sheet = test.GetWorksheet("Test1");
-		if (sheet)
-		{
-			sheet->Cell(0, 0)->Set("abc");
-			test.SaveAs("Time1.xls");
-		}
-		test.Load("Time1.xls");
-		BasicExcelWorksheet* w = test.GetWorksheet("Test1");
-		if (w)
-		{
-			w->Cell(1, 1)->Set("def");
-			test.SaveAs("Time1.xls");
-		}
-		BasicExcel excelFile;
-		excelFile.AddWorksheet("courseName",-1);
-		excelFile.SaveAs("courses.xls");
-
-		excelFile.Load("courses.xls");
-		BasicExcelWorksheet* curCourse = excelFile.GetWorksheet("courseName");
-		if (curCourse)
-		{
-			TRACE("curCourse name is %s", curCourse->GetAnsiSheetName());
-			curCourse->Cell(1, 1)->Set("coursename");
-			/*curCourse->Cell(2, 1)->Set("RollNo\\Quiz");
-			for (int i = 1; i <= numQuiz; i++)
-			{
-			curCourse->Cell(1, i)->SetInteger(i);
-			}*/
-			excelFile.SaveAs("courses.xls");
-		}
-		for (i = 0; i < 3;i++)
-		excelFile.AddWorksheet("CS203", -1);
-		excelFile.SaveAs("courses.xls");
-
-	}
-
-
+	AfxMessageBox(_T("Student Marks Management System"));
 
 }
 
@@ -331,5 +213,20 @@ void CMFCApplication14Dlg::OnBnClickedButton2()
 	string *cs = db->getCourseList(&a);	*/
 	login_ats dlg;
 	dlg.DoModal();
+	
 	// TODO: Add your control notification handler code here
+}
+
+
+void CAboutDlg::OnBnClickedOk()
+{
+	// TODO: Add your control notification handler code here
+	CDialogEx::OnOK();
+}
+
+
+void CMFCApplication14Dlg::OnBnClickedButton3()
+{
+	// TODO: Add your control notification handler code here
+	AfxMessageBox(_T("For help, consult the technical manual"));
 }

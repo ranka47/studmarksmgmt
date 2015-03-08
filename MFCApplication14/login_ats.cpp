@@ -17,7 +17,7 @@
 IMPLEMENT_DYNAMIC(login_ats, CDialogEx)
 
 string password_string;
-bool login_allowed = FALSE;
+
 
 
 long long int roll_number;
@@ -42,6 +42,7 @@ void login_ats::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_USERNAME, roll_id);
 	DDX_Text(pDX, IDC_PASSWORD, password_cstring);
+	
 }
 
 
@@ -55,6 +56,7 @@ END_MESSAGE_MAP()
 
 void login_ats::OnBnClickedLogin()
 {
+	bool login_allowed = FALSE;
 	DatabaseWrapper *db = new DatabaseWrapper();
 	Person type=Person::ADMIN;
 	// TODO: Add your control notification handler code here
@@ -86,16 +88,22 @@ void login_ats::OnBnClickedLogin()
 		{
 			dashboard_a admin;
 			admin.DoModal();
+	
+			EndDialog(0);
 		}
 		else if (type == Person::PROF)
 		{
 			dashboard_t prof;
 			prof.DoModal();
+
+			EndDialog(0);
 		}
 		else
 		{
 			dashboard_s student;
 			student.DoModal();
+	
+			EndDialog(0);
 		}
 	}
 	else
@@ -108,19 +116,25 @@ void login_ats::OnBnClickedLogin()
 void login_ats::OnBnClickedAdmin()
 {
 	// TODO: Add your control notification handler code here
-	admin = !admin;
+	admin = TRUE;
+	prof = FALSE;
+	student = FALSE;
 }
 
 
 void login_ats::OnBnClickedFaculty()
 {
 	// TODO: Add your control notification handler code here
-	prof = !prof;
+	admin = FALSE;
+	prof = TRUE;
+	student = FALSE;
 }
 
 
 void login_ats::OnBnClickedStudent()
 {
 	// TODO: Add your control notification handler code here
-	student = !student;
+	admin = FALSE;
+	prof = FALSE;
+	student = TRUE;
 }

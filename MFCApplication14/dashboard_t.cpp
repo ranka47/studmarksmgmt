@@ -26,6 +26,7 @@ dashboard_t::~dashboard_t()
 void dashboard_t::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+
 }
 
 
@@ -44,7 +45,6 @@ void dashboard_t::OnBnClickedUpdate()
 	// TODO: Add your control notification handler code here
 	update_marks_t dlg;
 	dlg.DoModal();
-	GetOwner()->ShowWindow(FALSE);
 
 }
 
@@ -59,6 +59,5 @@ void dashboard_t::OnBnClickedAddcourse()
 void dashboard_t::OnBnClickedLogout()
 {
 	// TODO: Add your control notification handler code here
-	login_ats dlg;
-	dlg.DoModal();
+	EndDialog(0);
 }

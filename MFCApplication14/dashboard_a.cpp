@@ -64,6 +64,5 @@ void dashboard_a::OnBnClickedStudent()
 void dashboard_a::OnBnClickedLogout()
 {
 	// TODO: Add your control notification handler code here
-	login_ats dlg;
-	dlg.DoModal();
+	EndDialog(0);
 }

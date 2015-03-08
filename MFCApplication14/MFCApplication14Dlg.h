@@ -35,4 +35,5 @@ public:
 	CString test;
 	afx_msg void OnEnChangeEdit2();
 	afx_msg void OnBnClickedButton2();
+	afx_msg void OnBnClickedButton3();
 };

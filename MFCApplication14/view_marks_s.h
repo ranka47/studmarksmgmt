@@ -18,4 +18,10 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedCancel2();
+	afx_msg void OnCbnSelchangeCombo1();
+	CString course;
+	afx_msg void OnEnChangeEdit1();
+	afx_msg void OnBnClickedCancel();
 };

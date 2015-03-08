@@ -63,6 +63,7 @@ void add_course_t::OnBnClickedOk()
 		pEdit[i]->GetWindowText(*str[i]);
 	}
 	UpdateData(FALSE);
+
 	//pEdit[0]->GetWindowText(str);
 	//result = str;
 }
@@ -70,6 +71,8 @@ void add_course_t::OnBnClickedOk()
 
 void add_course_t::OnBnClickedButton1()
 {
+	AfxMessageBox(_T("This code is still in progress"));
+	return;
 	// TODO: Add your control notification handler code here
 	UpdateData(TRUE);
 	int noquiz = no_of_exams;
@@ -122,5 +125,14 @@ void add_course_t::OnBnClickedButton2()
 	UpdateData(FALSE);
 	DatabaseWrapper *db = new DatabaseWrapper();
 	db->createCourse(noquiz, t1, t2, 2015);
-	
+	int *weights = new int[noquiz], sum=0;
+	for (size_t i = 0; i < (noquiz-1); i++)
+	{
+		weights[i] = (100) / noquiz;
+		sum += weights[i];
+	}
+	weights[noquiz - 1] = 100 - sum;
+	db->setQuizWeights(ConvertToString(cname), weights);
+
+	AfxMessageBox(_T("Course added successfully"));
 }

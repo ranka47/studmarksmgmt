@@ -22,4 +22,9 @@ public:
 	CString studentname;
 	LONGLONG studentid;
 	afx_msg void OnBnClickedOk();
+	
+	afx_msg void OnBnClickedCancel();
+	CString s_password;
+	afx_msg void OnEnChangePassword();
+	afx_msg void OnEnChangeEdit3();
 };

@@ -178,7 +178,7 @@ void update_marks_t::OnBnClickedUpload()
 void update_marks_t::OnBnClickedBack()
 {
 	// TODO: Add your control notification handler code here
-	GetOwner()->ShowWindow(TRUE);
+	EndDialog(0);
 }
 
 
@@ -201,7 +201,7 @@ void update_marks_t::OnCbnSelchangeCombo1()
 
 	//DatabaseWrapper *db = new DatabaseWrapper();
 	//	int size; Course* courses = db->getCourses(roll_number, Person::PROF, &size);
-
+	corid2->ResetContent();
 	for (size_t i = 0; i < size2; i++)
 	{
 		CString temp;
