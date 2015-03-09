@@ -74,7 +74,6 @@ void dashboard_s::OnBnClickedView()
 void dashboard_s::OnBnClickedResult()
 {
 	// TODO: Add your control notification handler code here
-	//result_s dlg;
-	//dlg.DoModal();
-	AfxMessageBox(_T("The feature has not been added yet!"));
+	result_s dlg;
+	dlg.DoModal();
 }
