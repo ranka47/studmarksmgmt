@@ -12,7 +12,10 @@
 
 IMPLEMENT_DYNAMIC(add_course_t, CDialogEx)
 int glob[16];
+CString name;
 CEdit* pEdit[15];
+int numquiz;
+Course *curCourse;
 // CAboutDlg dialog used for App About
 CString str[16][5];
 add_course_t::add_course_t(CWnd* pParent /*=NULL*/)
@@ -48,36 +51,17 @@ END_MESSAGE_MAP()
 // add_course_t message handlers
 
 
-void add_course_t::OnBnClickedOk()
-{
-	// TODO: Add your control notification handler code here
-	CDialogEx::OnOK();
-	UpdateData();
-	int noquiz = no_of_exams;
-	CString cname = coursename;
-	CString cid = coursenumber;
-	int quizzes = noquiz;
-	int i;
-	for (size_t i = 0; i < quizzes; i++)
-	{
-		pEdit[i]->GetWindowText(*str[i]);
-	}
-	UpdateData(FALSE);
-
-	//pEdit[0]->GetWindowText(str);
-	//result = str;
-}
 
 
 void add_course_t::OnBnClickedButton1()
 {
-	
 	// TODO: Add your control notification handler code here
 	UpdateData(TRUE);
 	int noquiz = no_of_exams;
 	CString cname = coursename;
 	CString cid = coursenumber;
 	int quizzes = noquiz;
+	numquiz = quizzes;
 	int left = 200, top = 280, right = 260, bottom = 300, origtop = top, origbot = bottom;
 
 	for (int i = 0; i < quizzes; i++){
@@ -110,10 +94,55 @@ static string ConvertToString(CString a)
 	return t;
 }
 
+
+void add_course_t::OnBnClickedOk()
+{
+
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	int quizzes = numquiz, sum=0;
+	int *weights = new int[quizzes];
+	int i;
+	for (size_t i = 0; i < quizzes; i++)
+	{
+		pEdit[i]->GetWindowText(*str[i]);
+		CString temp("");
+		for (size_t j = 0; j < 5;j++)
+		{
+			temp.Append(str[i][j]);
+		}
+		if (temp == ""){
+			AfxMessageBox(_T("Please fill all weights"));
+			break;
+		}
+		weights[i] = atoi(ConvertToString(temp).c_str());
+		if (!weights[i])
+		{
+			AfxMessageBox(_T("Please enter only non-zero integral weights"));
+			break;
+		}
+		sum += weights[i];
+	}
+	if (sum == 100)
+	{
+		DatabaseWrapper *db = new DatabaseWrapper();
+		db->setQuizWeights(ConvertToString(name), weights);
+	}
+	else
+	{
+		AfxMessageBox(_T("The sum of the weights should be 100."));
+		return;
+	}
+	UpdateData(FALSE);
+	//pEdit[0]->GetWindowText(str);
+	//result = str;
+}
+
+
 void add_course_t::OnBnClickedButton2()
 {
 	// TODO: Add your control notification handler code here
-	UpdateData();
+	UpdateData(TRUE);
 	int noquiz = no_of_exams;
 	CString cname = coursename;
 	CString cid = coursenumber;
@@ -121,17 +150,13 @@ void add_course_t::OnBnClickedButton2()
 	string t1 = ConvertToString(cname);
 	string t2 = ConvertToString(cid);
 	
-	UpdateData(FALSE);
 	DatabaseWrapper *db = new DatabaseWrapper();
-	db->createCourse(noquiz, t1, t2, 2015);
-	int *weights = new int[noquiz], sum=0;
-	for (size_t i = 0; i < (noquiz-1); i++)
-	{
-		weights[i] = (100) / noquiz;
-		sum += weights[i];
-	}
-	weights[noquiz - 1] = 100 - sum;
-	db->setQuizWeights(ConvertToString(cname), weights);
+	curCourse = db->createCourse(noquiz, t1, t2, 2015);
+	name = cid;
+	UpdateData(FALSE);
 
-	AfxMessageBox(_T("Course added successfully"));
+	GetDlgItem(IDC_BUTTON1)->EnableWindow(TRUE);
+	GetDlgItem(IDOK)->EnableWindow(TRUE);
+
+
 }

@@ -177,7 +177,9 @@ bool DatabaseWrapper::setQuizWeights(string courseId, int *weights)
 {
 	BasicExcel excelFile;
 	excelFile.Load(COURSE_FILE);
-	BasicExcelWorksheet* sheet = excelFile.GetWorksheet(courseId.c_str());
+	string dummy = courseId.c_str();
+	char*str = (char*)dummy.c_str();
+	BasicExcelWorksheet* sheet = excelFile.GetWorksheet(str);
 
 	if (!sheet)
 		return false;
@@ -386,10 +388,7 @@ bool DatabaseWrapper::checkLogin(long long int username, CString password, Perso
 		return false;
 	int found = -1;
 	for (size_t j = 0; j < sheet->GetTotalRows(); j++)
-	{
-		if ( (sheet->Cell(j, ID_COL)->Type() == BasicExcelCell::INT || sheet->Cell(j, ID_COL)->Type() == BasicExcelCell::DOUBLE) && username == sheet->Cell(j, ID_COL)->GetInteger())	
-		{ found = j;	break; }	
-	}
+	{	if ( (sheet->Cell(j, ID_COL)->Type() == BasicExcelCell::INT || sheet->Cell(j, ID_COL)->Type() == BasicExcelCell::DOUBLE) && username == sheet->Cell(j, ID_COL)->GetInteger())	{ found = j;	break; }	}
 	if (found == -1) return false;
 	if (sheet->Cell(found, NAME_COL)->Type() != BasicExcelCell::STRING) return false;
 	//string temp(sheet->Cell(found, NAME_COL)->GetString()), temp2(password);
