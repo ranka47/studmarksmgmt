@@ -27,7 +27,7 @@ view_marks_s::~view_marks_s()
 void view_marks_s::DoDataExchange(CDataExchange* pDX)
 {
 	extern long long int roll_number;
-	CDialogEx::DoDataExchange(pDX);
+ 	CDialogEx::DoDataExchange(pDX);
 	DDX_CBString(pDX, IDC_COMBO1, course);
 	CComboBox *Majors = (CComboBox*)GetDlgItem(IDC_COMBO1);
 	DatabaseWrapper *db = new DatabaseWrapper();
@@ -108,6 +108,14 @@ void view_marks_s::OnBnClickedCancel2()
 		label = new CStatic;
 		label->Create(quizz, WS_CHILD | WS_VISIBLE, CRect(left - 60, top, right - 60, bottom), this, 90210);		
 		top += 25;	bottom += 25;		
+	}
+	CString t("");
+	for (size_t i = 0; i < (16 - quizzes); i++)
+	{		
+		CStatic *label;
+		label = new CStatic;
+		label->Create(t, WS_CHILD | WS_VISIBLE, CRect(left - 60, top, right - 60, bottom), this, 90210);
+		top += 25;	bottom += 25;
 	}
 }
 

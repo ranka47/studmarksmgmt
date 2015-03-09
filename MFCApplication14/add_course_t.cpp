@@ -80,8 +80,7 @@ void add_course_t::OnBnClickedButton1()
 		top += 25;	bottom += 25;
 	}
 	UpdateData(FALSE);
-
-}
+	}
 
 static string ConvertToString(CString a)
 {
@@ -149,14 +148,22 @@ void add_course_t::OnBnClickedButton2()
 	
 	string t1 = ConvertToString(cname);
 	string t2 = ConvertToString(cid);
-	
-	DatabaseWrapper *db = new DatabaseWrapper();
-	curCourse = db->createCourse(noquiz, t1, t2, 2015);
-	name = cid;
-	UpdateData(FALSE);
+	if (t1 != "" && t1 != " " && t2 != "" && t2 != " " && (noquiz >= 1 && noquiz <= 16))
+	{
+		DatabaseWrapper *db = new DatabaseWrapper();
+		curCourse = db->createCourse(noquiz, t1, t2, 2015);
+		name = cid;
+		UpdateData(FALSE);
 
-	GetDlgItem(IDC_BUTTON1)->EnableWindow(TRUE);
-	GetDlgItem(IDOK)->EnableWindow(TRUE);
+		GetDlgItem(IDC_BUTTON1)->EnableWindow(TRUE);
+		GetDlgItem(IDOK)->EnableWindow(TRUE);
+	}
+	else
+	{
+		AfxMessageBox(_T("Give proper name and code for the course. Please enter number of quizzes between 1 and 16."));
+	}
 
 
 }
+
+

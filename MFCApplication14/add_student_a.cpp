@@ -72,7 +72,7 @@ void add_student_a::OnBnClickedOk()
 	int flag = 0;
 	for (int i = 0; i < len; i++)
 	{
-		if (!isalpha(tmp[i]))
+		if (!isalpha(tmp[i]) || tmp[i] != ' ')
 		{
 			AfxMessageBox(_T("Enter proper Name (albhabets only)"));
 			flag = 1;
@@ -80,7 +80,7 @@ void add_student_a::OnBnClickedOk()
 		}
 	}
 
-	if (studentnamevar != "" && flag==0 &&studentidvar >= 100000000 && studentidvar <= 999999999)
+	if (studentnamevar != "" && studentnamevar != " " && flag==0 &&studentidvar >= 100000000 && studentidvar <= 999999999 )
 	{
 		
 		CString password = s_password;
@@ -96,9 +96,8 @@ void add_student_a::OnBnClickedOk()
 		AfxMessageBox(_T("Student added successfully!!!"));
 		EndDialog(0);
 
-
 	}
-	else if (studentnamevar == "")
+	else if (studentnamevar == "" || studentnamevar == " ")
 		AfxMessageBox(_T("Please fill in all the details before submitting"));
 
 	else if (studentidvar < 100000000 || studentidvar > 999999999)

@@ -94,7 +94,7 @@ void add_faculty_a::OnBnClickedOk2()
 	char *tmp = (char*)dummy.c_str();
 	for (int i = 0; i < len; i++)
 	{
-		if (!isalpha(tmp[i]))
+		if (!isalpha(tmp[i]) || tmp[i] != ' ')
 		{
 			AfxMessageBox(_T("Enter proper Name (albhabets only)"));
 			flag = 1;
@@ -117,9 +117,9 @@ void add_faculty_a::OnBnClickedOk2()
 		AfxMessageBox(_T("Faculty added successfully!!!"));
 		EndDialog(0);
 	}
-	else if (facultynamevar == "" || facultyidvar >= 100000 || facultyidvar <= 999999)
+	else if (facultynamevar == "" || facultyidvar < 100000 || facultyidvar >= 999999 || facultynamevar == " ")
 	{
-		AfxMessageBox(_T("Please fill in proper before submitting. ID should be 9 digits long. Name and password are required fields."));
+		AfxMessageBox(_T("Please fill properly before submitting. ID should be 6 digits long. Name and password are required fields."));
 	}
 	UpdateData(FALSE);
 }

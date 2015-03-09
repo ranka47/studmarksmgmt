@@ -28,20 +28,20 @@ void dashboard_s::DoDataExchange(CDataExchange* pDX)
 {
 	extern long long int roll_number;
 	CDialogEx::DoDataExchange(pDX);
-	CStatic *label;
-	label = new CStatic;
-	CString quizz;
-	quizz.Format(_T("%ld"),roll_number);
-	label->Create(quizz, WS_CHILD | WS_VISIBLE, CRect( 120, 20,220,60), this, 90210);
-	CComboBox *Majors = (CComboBox*)GetDlgItem(IDC_COMBO1);
-	DatabaseWrapper *db = new DatabaseWrapper();
-	int size; Course* courses = db->getCourses(roll_number, Person::STUDENT, &size);
+	//CStatic *label;
+	//label = new CStatic;
+	//CString quizz;
+	//quizz.Format(_T("%ld"),roll_number);
+	//label->Create(quizz, WS_CHILD | WS_VISIBLE, CRect( 120, 20,220,60), this, 90210);
+	//CComboBox *Majors = (CComboBox*)GetDlgItem(IDC_COMBO1);
+	//DatabaseWrapper *db = new DatabaseWrapper();
+	//int size; Course* courses = db->getCourses(roll_number, Person::STUDENT, &size);
 
-	for (size_t i = 0; i < size; i++)
-	{
-		CString temp(courses[i].courseId.c_str());
-		Majors->AddString(temp);
-	}
+	//for (size_t i = 0; i < size; i++)
+	//{
+	//	CString temp(courses[i].courseId.c_str());
+	//	Majors->AddString(temp);
+	//}
 	
 }
 

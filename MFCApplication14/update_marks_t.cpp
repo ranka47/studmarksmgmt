@@ -16,7 +16,8 @@
 #include "login_ats.h"
 
 
-CString path;
+CString path, cName;
+int qNum=-1;
 
 // update_marks_t dialog
 
@@ -27,11 +28,12 @@ update_marks_t::update_marks_t(CWnd* pParent /*=NULL*/)
 , course(_T(""))
 , exam(0)
 {
-
+	
 }
 update_marks_t::~update_marks_t()
 {
 }
+int file_upload = 0;
 
 static string ConvertToString(CString a)
 {
@@ -95,19 +97,17 @@ void update_marks_t::OnBnClickedChoosefile()
 
 		if (readFile.Open(path, CFile::modeRead, &fileException))
 		{
-			int flag = 0;
 			while (readFile.ReadString(strLine))
 			{
-				flag = 1;
+				file_upload = 1;
 			}
-			if (flag == 1)
-				MessageBox(path);
 		}
 		else
 		{
 			CString strErrorMsg;
 			strErrorMsg.Format(_T("Can't open file %s , error : %u"), path, fileException.m_cause);
 			AfxMessageBox(strErrorMsg);
+			file_upload = 0;
 		}
 		readFile.Close();
 	}
@@ -115,38 +115,47 @@ void update_marks_t::OnBnClickedChoosefile()
 
 void update_marks_t::OnBnClickedUpload()
 {
-	DatabaseWrapper *db = new DatabaseWrapper();
-	// TODO: Add your control notification handler code here
-	ifstream in(path);
-	string line, field;
-
-	vector<long long int> rollno;  // the 2D array
-	vector<int> marks;                // array of values for one line only
-	int i; int error = 0;
-	while (getline(in, line))    // get next line in file
+	if (file_upload == 1)
 	{
-		i = 0;
-		int temp1 = 0, temp2 = 0;
-		stringstream ss(line);
-		while (getline(ss, field, ','))  // break line into comma delimitted fields
+		DatabaseWrapper *db = new DatabaseWrapper();
+		// TODO: Add your control notification handler code here
+		ifstream in(path);
+		string line, field;
+
+		vector<long long int> rollno;  // the 2D array
+		vector<int> marks;                // array of values for one line only
+		int i; int error = 0;
+		while (getline(in, line))    // get next line in file
 		{
-			if (field != "")
+			i = 0;
+			int temp1 = 0, temp2 = 101;
+			stringstream ss(line);
+			while (getline(ss, field, ','))  // break line into comma delimitted fields
 			{
-				if (i == 0)
+				if (field != "")
 				{
-					//int temp1;
-					stringstream(field) >> temp1;
-					rollno.push_back(temp1);  // add each field to the 1D array
-					i = i + 1;
-					/*cout << temp1 << "\n";*/
-				}
-				else if (i == 1)
-				{
-					//int temp2;
-					stringstream(field) >> temp2;
-					marks.push_back(temp2);  // add each field to the 1D array
-					i = i + 1;
-					/*cout << temp2 << endl;*/
+					if (i == 0)
+					{
+						//int temp1;
+						stringstream(field) >> temp1;
+						rollno.push_back(temp1);  // add each field to the 1D array
+						i = i + 1;
+						/*cout << temp1 << "\n";*/
+					}
+					else if (i == 1)
+					{
+						//int temp2;
+						stringstream(field) >> temp2;
+						marks.push_back(temp2);  // add each field to the 1D array
+						i = i + 1;
+						/*cout << temp2 << endl;*/
+					}
+					else
+					{
+						error = 1;
+						AfxMessageBox(_T("Sorry!!File is in wrong format..Please Re-Upload"));
+					}
+					//error
 				}
 				else
 				{
@@ -155,19 +164,29 @@ void update_marks_t::OnBnClickedUpload()
 				}
 				//error
 			}
-			else
+			string t((CStringA)cName);
+			if (t == "" || qNum == -1)
 			{
 				error = 1;
-				AfxMessageBox(_T("Sorry!!File is in wrong format..Please Re-Upload"));
+				AfxMessageBox(_T("Sorry!! Please select valid quiz and course number"));
+				return;
 			}
-			//error
+			int maxWeight = db->getQuizWeight(qNum, t);
+			if (temp2 > maxWeight || maxWeight < 0) // NEGATIVE MARKING ALLOWED!! || temp2 < 0)
+			{
+				error = 1;
+				CString a("");
+				a.Format(_T("Sorry!! Please enter marks less than %d for this quiz for student %d"), maxWeight, temp1);
+				AfxMessageBox(a);
+				continue;
+			}
+			db->setQuizMarks(t, temp1, qNum, temp2);
+			// LINK BOTH COURSE AND EXAM
 		}
-		string t((CStringA)course);
-		db->setQuizMarks(t, temp1, exam, temp2);
-		// LINK BOTH COURSE AND EXAM
+		if (error==0)
+			AfxMessageBox(_T("File Uploaded Successfully."));
 	}
-
-	AfxMessageBox(_T("File Uploaded Successfully."));
+	else AfxMessageBox(_T("No File Chosen for uploading"));
 }
 
 
@@ -184,6 +203,8 @@ void update_marks_t::OnBnClickedBack()
 
 void update_marks_t::OnCbnSelchangeCombo2()
 {
+	CComboBox *corid2 = (CComboBox*)GetDlgItem(IDC_COMBO2);
+	qNum = corid2->GetCurSel() + 1;
 }
 
 
@@ -196,7 +217,7 @@ void update_marks_t::OnCbnSelchangeCombo1()
 	int selIndex = corid->GetCurSel();
 	CString name;
 	corid->GetLBText(selIndex, name);
-
+	cName = name;
 	int size2 = db->getNumberQuiz(ConvertToString(name));
 
 	//DatabaseWrapper *db = new DatabaseWrapper();
