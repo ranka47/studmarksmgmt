@@ -22,9 +22,9 @@ public:
 	afx_msg void OnEnChangeEdit3();
 	CString facultyname;
 	LONGLONG facultyid;
-	afx_msg void OnBnClickedOk2();
 	afx_msg void OnEnChangeEdit1();
 	
 	afx_msg void OnBnClickedCancel3();
 	CString t_password;
+	afx_msg void OnBnClickedOk2();
 };

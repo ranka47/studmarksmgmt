@@ -71,8 +71,7 @@ void add_course_t::OnBnClickedOk()
 
 void add_course_t::OnBnClickedButton1()
 {
-	AfxMessageBox(_T("This code is still in progress"));
-	return;
+	
 	// TODO: Add your control notification handler code here
 	UpdateData(TRUE);
 	int noquiz = no_of_exams;

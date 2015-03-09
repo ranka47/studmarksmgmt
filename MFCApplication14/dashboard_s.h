@@ -22,4 +22,5 @@ public:
 	afx_msg void OnBnClickedLogout();
 	afx_msg void OnBnClickedView();
 	afx_msg void OnBnClickedResult();
+	afx_msg void OnCbnSelchangeCombo1();
 };
