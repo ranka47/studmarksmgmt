@@ -91,6 +91,16 @@ BOOL CMFCApplication14Dlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
+
+	// Set the icon for this dialog.  The framework does this automatically
+	//  when the application's main window is not a dialog
+	SetIcon(m_hIcon, TRUE);			// Set big icon
+	SetIcon(m_hIcon, FALSE);		// Set small icon
+
+	// TODO: Add extra initialization here
+	//Using built-in function for background image
+	SetBackgroundImage(IDB_BITMAP1);
+
 	// Add "About..." menu item to system menu.
 
 	// IDM_ABOUTBOX must be in the system command range.
@@ -113,8 +123,9 @@ BOOL CMFCApplication14Dlg::OnInitDialog()
 
 	// Set the icon for this dialog.  The framework does this automatically
 	//  when the application's main window is not a dialog
-	SetIcon(m_hIcon, TRUE);			// Set big icon
-	SetIcon(m_hIcon, FALSE);		// Set small icon
+	HICON hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON1));
+	SetIcon(hIcon, FALSE);			// Set big icon
+	SetIcon(hIcon, TRUE);		// Set small icon
 
 	// TODO: Add extra initialization here
 
@@ -174,7 +185,7 @@ HCURSOR CMFCApplication14Dlg::OnQueryDragIcon()
 void CMFCApplication14Dlg::OnBnClickedButton1()
 {
 	// TODO: Add your control notification handler code here
-	AfxMessageBox(_T("Student Marks Management System"));
+	AfxMessageBox(_T("Student Marks Management System: Software Engineering Lab Assignment 2"));
 
 }
 
@@ -228,5 +239,5 @@ void CAboutDlg::OnBnClickedOk()
 void CMFCApplication14Dlg::OnBnClickedButton3()
 {
 	// TODO: Add your control notification handler code here
-	AfxMessageBox(_T("For help, consult the technical manual"));
+	AfxMessageBox(_T("Choose the Login option on the Main Screen to go to the Login page. From there, depending of the category of user, login to the respective dashboard. For more help, consult the technical manual"));
 }

@@ -1,3 +1,6 @@
+//File for concrete implementation of all the database objects that are used, and their properties
+//Author: Karthik Duddu
+
 #include <map>
 #include <string>
 #include "ObjectDefinitions.h"

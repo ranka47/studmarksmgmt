@@ -21,7 +21,7 @@
 using namespace std;
 using namespace YExcel;
 
-enum Person {PROF, STUDENT, ADMIN};
+enum Person {PROF, STUDENT, ADMIN,NONE};
 
 class DatabaseWrapper;
 class Course;

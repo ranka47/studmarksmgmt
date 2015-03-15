@@ -11,13 +11,17 @@
 using namespace YExcel;
 using namespace std;
 
+//Constructor for creating database-access object
+//Checks that the database (3 Excel files) are present , and if not creates them for further usage
 DatabaseWrapper::DatabaseWrapper()
 {
+	bool notCreated = false;
 	BasicExcel text;
 	if (!text.Load(COURSE_FILE))
 	{
 		text.New(0);
 		text.SaveAs(COURSE_FILE);
+		notCreated = true;
 	}
 
 	if (!text.Load(PEOPLE_FILE))
@@ -27,7 +31,8 @@ DatabaseWrapper::DatabaseWrapper()
 		text.RenameWorksheet("Sheet2", STUDENT_SHEET);
 		text.RenameWorksheet("Sheet3", ADMIN_SHEET);
 		text.SaveAs(PEOPLE_FILE);
-		TRACE("people sheet created");
+		notCreated = true;
+		//TRACE("people sheet created");
 	}
 	else
 		TRACE("people sheet exists already"); 
@@ -39,10 +44,19 @@ DatabaseWrapper::DatabaseWrapper()
 		text.RenameWorksheet("Sheet2", STUDENT_SHEET);
 		text.RenameWorksheet("Sheet3", ADMIN_SHEET);
 		text.SaveAs(LOGIN_FILE);		
+		notCreated = true;
+	}
+
+	if (notCreated)
+	{
+		addPerson("Admin", 1, Person::ADMIN);
+		addLoginDetails(1, "admin", Person::ADMIN);
 	}
 
 }
 
+//Method for creating a course and adding its details to the database
+//Returns pointer to a course object
 Course* DatabaseWrapper::createCourse(int numQuiz, string courseName, string courseId, int year)
 {	
 	BasicExcel excelFile;
@@ -59,6 +73,7 @@ Course* DatabaseWrapper::createCourse(int numQuiz, string courseName, string cou
 		curCourse->Cell(0, 1)->Set(courseId.c_str());
 		curCourse->Cell(0, 3)->SetInteger(year);
 		curCourse->Cell(0, 4)->SetInteger(numQuiz);
+		curCourse->Cell(0, 5)->SetInteger(0);
 		curCourse->Cell(1, 0)->Set("RollNo\\Quiz");
 		for (int i = 1; i <= numQuiz; i++)
 		{
@@ -70,6 +85,8 @@ Course* DatabaseWrapper::createCourse(int numQuiz, string courseName, string cou
 	return new Course("","",-1);//make it return the new course object
 }
 
+//Adding people to the people database, given their name, Person type and their unique ID
+//Return whether the addition to the database was successful or not
 bool DatabaseWrapper::addPerson(string name, long long int identifier, Person personType)
 {
 	BasicExcel e;
@@ -92,6 +109,8 @@ bool DatabaseWrapper::addPerson(string name, long long int identifier, Person pe
 	return true;
 }
 
+//Method for adding a person to a particular course (adds to the Course database as well as the people database)
+//Returns whether addition was successful or not
 bool DatabaseWrapper::linkPersonCourse(long long int identifier, Person personType, string courseId)
 {
 	BasicExcel excelFile;
@@ -101,7 +120,8 @@ bool DatabaseWrapper::linkPersonCourse(long long int identifier, Person personTy
 		sheet = excelFile.GetWorksheet(PROF_SHEET);
 	else if (personType == Person::STUDENT)
 		sheet = excelFile.GetWorksheet(STUDENT_SHEET);
-	
+
+	//VALIDATION CHECK: If sheet doesnt exist or if the person/course is not found, the return false
 	if (!sheet)
 		return false;
 
@@ -145,13 +165,16 @@ bool DatabaseWrapper::linkPersonCourse(long long int identifier, Person personTy
 	}
 	else if (personType == Person::STUDENT)
 	{
-		sheet->Cell(sheet->GetTotalRows(), 0)->SetInteger(identifier);
+		sheet->Cell(sheet->Cell(0, 5)->GetInteger() + 2, 0)->SetInteger(identifier);
+		sheet->Cell(0, 5)->SetInteger(1 + sheet->Cell(0, 5)->GetInteger());
 	}
 
 	excelFile.SaveAs(COURSE_FILE);
 	return true;
 }	
 
+//Auxiliary method for returning the course object, given the unique course code
+//Returns pointer to the course object
 Course* DatabaseWrapper::getCourseById(string courseId)
 {
 	BasicExcel file;
@@ -173,6 +196,8 @@ Course* DatabaseWrapper::getCourseById(string courseId)
 	return new Course(name, id, nQ);
 }
 
+//Method for adding the weightages to all the different quizzes
+//Returns whether or not the addition was successful
 bool DatabaseWrapper::setQuizWeights(string courseId, int *weights)
 {
 	BasicExcel excelFile;
@@ -181,6 +206,7 @@ bool DatabaseWrapper::setQuizWeights(string courseId, int *weights)
 	char*str = (char*)dummy.c_str();
 	BasicExcelWorksheet* sheet = excelFile.GetWorksheet(str);
 
+	//VALIDATION CHECK: To see if sheet is available and that the database is of the correct format (to detect tampering)
 	if (!sheet)
 		return false;
 	if (sheet->Cell(0, 4)->Type() != BasicExcelCell::INT)
@@ -192,12 +218,15 @@ bool DatabaseWrapper::setQuizWeights(string courseId, int *weights)
 	return true;
 }
 
+//Method to set the marks of a student in the quiz of a particular course
+//Returns whether or not the addition took place successfully
 bool DatabaseWrapper::setQuizMarks(string courseId, long long int identifier, int quizNumber, int marks)
 {
 	BasicExcel excelFile;
 	excelFile.Load(COURSE_FILE);
 	BasicExcelWorksheet *sheet = excelFile.GetWorksheet(courseId.c_str());
 
+	//VALIDATION CHECK: If sheet doesnt exist or if the person/course is not found, the return false
 	if (!sheet)
 		return false;
 	int found = -1;
@@ -213,6 +242,8 @@ bool DatabaseWrapper::setQuizMarks(string courseId, long long int identifier, in
 	return true;
 }
 
+//Method to get the marks of a particular student given the courseId, the unique ID and the quiz number
+//Returns the marks of the student in the quiz and -1 if marks do not exist
 int DatabaseWrapper::getStudQuizMarks(string courseId, long long int identifier, int quizNumber)
 {
 	BasicExcel excelFile;
@@ -229,11 +260,13 @@ int DatabaseWrapper::getStudQuizMarks(string courseId, long long int identifier,
 	}
 	if (found == -1)
 		return -1;
-	if (sheet->Cell(found, quizNumber)->Type() != BasicExcelCell::INT)
+	if (sheet->Cell(found, quizNumber)->Type() != BasicExcelCell::INT && sheet->Cell(found, quizNumber)->Type() != BasicExcelCell::DOUBLE)
 		return -1;
 	return sheet->Cell(found, quizNumber)->GetInteger();
 }
 
+//Method to obtain the weightage of a particular quiz in a course
+//Returns the weight of the quiz and -1 if it is not found
 int DatabaseWrapper::getQuizWeight(int quizNumber, string courseId)
 {
 	BasicExcel excelFile;
@@ -245,11 +278,13 @@ int DatabaseWrapper::getQuizWeight(int quizNumber, string courseId)
 	if (sheet->Cell(0, 4)->Type() != BasicExcelCell::INT)
 		return -1;
 	int numQuiz = sheet->Cell(0, 4)->GetInteger(), startCol = (numQuiz + 2);
-	if (sheet->Cell(quizNumber, startCol)->Type() != BasicExcelCell::INT)
+	if (sheet->Cell(quizNumber, startCol)->Type() != BasicExcelCell::INT && sheet->Cell(quizNumber, startCol)->Type() != BasicExcelCell::DOUBLE)
 		return -1;
 	return sheet->Cell(quizNumber, startCol)->GetInteger();
 }
 
+//Method to return marks of all the students for a given quiz
+//Returns pointer to Quiz object, else NULL
 Quiz* DatabaseWrapper::getQuizMarks(string courseId, int quizNumber)
 {
 	BasicExcel excelFile;
@@ -258,15 +293,17 @@ Quiz* DatabaseWrapper::getQuizMarks(string courseId, int quizNumber)
 	if (!sheet) return NULL;
 	if (sheet->Cell(1, quizNumber)->Type() != BasicExcelCell::INT) return NULL;
 	map<long long int, int> marks;
-	for (size_t i = 2; i < sheet->GetTotalRows(); i++)
+	for (size_t i = 2; i < (2 + sheet->Cell(0, 5)->GetInteger()); i++)
 	{
-		if (sheet->Cell(i, 0)->Type() != BasicExcelCell::INT || sheet->Cell(i, quizNumber)->Type() != BasicExcelCell::INT) break;
+		if ((sheet->Cell(i, 0)->Type() != BasicExcelCell::INT && sheet->Cell(i, 0)->Type() != BasicExcelCell::DOUBLE) || (sheet->Cell(i, quizNumber)->Type() != BasicExcelCell::INT && sheet->Cell(i, quizNumber)->Type() != BasicExcelCell::DOUBLE)) break;
 		marks[sheet->Cell(i, 0)->GetInteger()] = sheet->Cell(i, quizNumber)->GetInteger();
 	}
 	Quiz* q = new Quiz(quizNumber, getQuizWeight(quizNumber, courseId), courseId, marks);
 	return q;
 }
 
+//Auxiliary method to find out all the students enrolled in a course
+//Returns pointer to an array of quizzes, and sets the size of the quizzes in the 'size' argument, else NULL
 Student* DatabaseWrapper::getCourseStudents(string courseId, int *size)
 {
 	Student* st = new Student[100];
@@ -294,6 +331,8 @@ Student* DatabaseWrapper::getCourseStudents(string courseId, int *size)
 	return st;
 }
 
+//Auxiliary method to find out all the courses of a student
+//Returns pointer to an array of courses, and sets the size of the quizzes in the 'size' argument
 Course* DatabaseWrapper::getStudentCourses(long long int identifier, int *size)
 {
 	BasicExcel excelFile;
@@ -320,6 +359,8 @@ Course* DatabaseWrapper::getStudentCourses(long long int identifier, int *size)
 	return cs;
 }
 
+//Auxiliary method to find out all the courses of a professor
+//Returns pointer to an array of courses, and sets the size of the quizzes in the 'size' argument
 Course* DatabaseWrapper::getProfCourses(long long int identifier, int *size)
 {
 	BasicExcel excelFile;
@@ -346,16 +387,20 @@ Course* DatabaseWrapper::getProfCourses(long long int identifier, int *size)
 	return cs;
 }
 
+//Auxiliary method to find out the number of quizzes in a course
+//Returns integer (no. of quizzes), else -1
 int DatabaseWrapper::getNumberQuiz(string courseId)
 {
 	BasicExcel excelFile;
 	excelFile.Load(COURSE_FILE);
 	BasicExcelWorksheet *sheet = excelFile.GetWorksheet(courseId.c_str());
 	if (!sheet) return -1;
-	if (sheet->Cell(0, 4)->Type() != BasicExcelCell::INT) return -1;
+	if (sheet->Cell(0, 4)->Type() != BasicExcelCell::INT && sheet->Cell(0, 4)->Type() != BasicExcelCell::DOUBLE) return -1;
 	return sheet->Cell(0, 4)->GetInteger();
 }
 
+//Auxiliary method to find out names of all the courses
+//Returns pointer to an array of course names, and sets the size of the quizzes in the 'size' argument
 string* DatabaseWrapper::getCourseList(int *size)
 {
 	BasicExcel excelFile;
@@ -370,6 +415,8 @@ string* DatabaseWrapper::getCourseList(int *size)
 	return files;
 }
 
+//Auxiliary method to check if the login using a particular username/password has passed or failed
+//Returns boolean value indicating success or failure
 bool DatabaseWrapper::checkLogin(long long int username, CString password, Person personType)
 {
 	BasicExcel excelFile;
@@ -383,6 +430,7 @@ bool DatabaseWrapper::checkLogin(long long int username, CString password, Perso
 		break;
 	case Person::PROF: sheet = excelFile.GetWorksheet(PROF_SHEET);
 		break;
+	default: return false;
 	}
 	if (!sheet)
 		return false;
@@ -396,6 +444,8 @@ bool DatabaseWrapper::checkLogin(long long int username, CString password, Perso
 	return (t == password);
 }
 
+//Method to add the login details of a person to the login database
+//Returns whether addition has been successful or not
 bool DatabaseWrapper::addLoginDetails(long long int identifier, string password, Person personType)
 {
 	BasicExcel excelFile;
@@ -418,6 +468,8 @@ bool DatabaseWrapper::addLoginDetails(long long int identifier, string password,
 	return true;
 }
 
+//Auxiliary method to find out all the courses in the database
+//Returns pointer to an array of courses, and sets the size of the quizzes in the 'size' argument, else NULL
 Course* DatabaseWrapper::getCourses(long long int identifier, Person personType, int *size)
 {
 	BasicExcel excelFile;
@@ -446,6 +498,8 @@ Course* DatabaseWrapper::getCourses(long long int identifier, Person personType,
 	if (found == -1) return NULL;
 	else a = (char*)sheet->Cell(found, COURSE_COL)->GetString();
 	
+	if (a == NULL)
+	{	*size = 0;	return NULL;	}
 	char *list = strtok(a, ",");
 	Course* cs = new Course[1000];
 	*size = 0;

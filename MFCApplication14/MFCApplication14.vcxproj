@@ -14,6 +14,7 @@
     <ProjectGuid>{D3D162DB-66E7-4468-B7BA-F5670476858A}</ProjectGuid>
     <RootNamespace>MFCApplication14</RootNamespace>
     <Keyword>MFCProj</Keyword>
+    <ProjectName>StudMarksMgmt</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -102,9 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="add_course_t.h" />
-    <ClInclude Include="add_exam_t.h" />
     <ClInclude Include="add_faculty_a.h" />
     <ClInclude Include="add_student_a.h" />
+    <ClInclude Include="add_student_t.h" />
     <ClInclude Include="BasicExcel1.h" />
     <ClInclude Include="dashboard_a.h" />
     <ClInclude Include="dashboard_s.h" />
@@ -119,12 +120,13 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="update_marks_t.h" />
     <ClInclude Include="view_marks_s.h" />
+    <ClInclude Include="view_marks_t.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="add_course_t.cpp" />
-    <ClCompile Include="add_exam_t.cpp" />
     <ClCompile Include="add_faculty_a.cpp" />
     <ClCompile Include="add_student_a.cpp" />
+    <ClCompile Include="add_student_t.cpp" />
     <ClCompile Include="BasicExcel1.cpp" />
     <ClCompile Include="dashboard_a.cpp" />
     <ClCompile Include="dashboard_s.cpp" />
@@ -141,6 +143,7 @@
     </ClCompile>
     <ClCompile Include="update_marks_t.cpp" />
     <ClCompile Include="view_marks_s.cpp" />
+    <ClCompile Include="view_marks_t.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MFCApplication14.rc" />
@@ -149,6 +152,9 @@
     <None Include="res\MFCApplication14.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\..\Desktop\icon.ico" />
+    <Image Include="res\icon.ico" />
+    <Image Include="res\Image.bmp" />
     <Image Include="res\MFCApplication14.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

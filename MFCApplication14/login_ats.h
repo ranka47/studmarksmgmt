@@ -16,6 +16,10 @@ public:
 	enum { IDD = login };
 
 protected:
+	HICON m_hIcon;
+
+	// Generated message map functions
+	virtual BOOL OnInitDialog();
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
@@ -31,4 +35,5 @@ public:
 	LONGLONG roll_id;
 	
 	CString password_cstring;
+	afx_msg void OnEnChangeUsername();
 };

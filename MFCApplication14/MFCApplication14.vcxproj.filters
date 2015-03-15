@@ -63,13 +63,16 @@
     <ClInclude Include="add_course_t.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="add_exam_t.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="dashboard_a.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dashboard_s.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="add_student_t.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="view_marks_t.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -116,13 +119,16 @@
     <ClCompile Include="add_course_t.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="add_exam_t.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="dashboard_a.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dashboard_s.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="add_student_t.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="view_marks_t.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -138,6 +144,15 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\MFCApplication14.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Image.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\icon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Desktop\icon.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

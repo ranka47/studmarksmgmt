@@ -60,10 +60,7 @@ void update_marks_t::DoDataExchange(CDataExchange* pDX)
 	{
 		CString temp(courses[i].courseId.c_str());
 		Majors->AddString(temp);
-	}
-	
-	
-	
+	}	
 }
 
 
@@ -100,6 +97,8 @@ void update_marks_t::OnBnClickedChoosefile()
 			while (readFile.ReadString(strLine))
 			{
 				file_upload = 1;
+				GetDlgItem(IDUPLOAD)->EnableWindow(TRUE);
+				GetDlgItem(IDCHOOSEFILE)->EnableWindow(FALSE);
 			}
 		}
 		else
@@ -176,15 +175,18 @@ void update_marks_t::OnBnClickedUpload()
 			{
 				error = 1;
 				CString a("");
-				a.Format(_T("Sorry!! Please enter marks less than %d for this quiz for student %d"), maxWeight, temp1);
+				a.Format(_T("Marks for student %d exceed maximum marks %d....skipping writing to file"), temp1, maxWeight);
 				AfxMessageBox(a);
 				continue;
 			}
 			db->setQuizMarks(t, temp1, qNum, temp2);
 			// LINK BOTH COURSE AND EXAM
 		}
-		if (error==0)
+		if (error == 0)
+		{
 			AfxMessageBox(_T("File Uploaded Successfully."));
+			EndDialog(0);
+		}
 	}
 	else AfxMessageBox(_T("No File Chosen for uploading"));
 }
@@ -205,6 +207,7 @@ void update_marks_t::OnCbnSelchangeCombo2()
 {
 	CComboBox *corid2 = (CComboBox*)GetDlgItem(IDC_COMBO2);
 	qNum = corid2->GetCurSel() + 1;
+	GetDlgItem(IDCHOOSEFILE)->EnableWindow(TRUE);
 }
 
 
@@ -230,5 +233,22 @@ void update_marks_t::OnCbnSelchangeCombo1()
 		corid2->AddString(temp);
 	}
 	delete db;
+}
 
+BOOL update_marks_t::OnInitDialog()
+{
+	CDialogEx::OnInitDialog();
+
+	// Set the icon for this dialog.  The framework does this automatically
+	//  when the application's main window is not a dialog
+	SetIcon(m_hIcon, TRUE);			// Set big icon
+	SetIcon(m_hIcon, FALSE);		// Set small icon
+
+	// TODO: Add extra initialization here
+	//Using built-in function for background image
+	SetBackgroundImage(IDB_BITMAP1);
+	HICON hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON1));
+	SetIcon(hIcon, FALSE);			// Set big icon
+	SetIcon(hIcon, TRUE);
+	return TRUE;  // return TRUE  unless you set the focus to a control
 }

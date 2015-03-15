@@ -72,7 +72,7 @@ void add_student_a::OnBnClickedOk()
 	int flag = 0;
 	for (int i = 0; i < len; i++)
 	{
-		if (!isalpha(tmp[i]) || tmp[i] != ' ')
+		if (!isalpha(tmp[i]) && tmp[i] != ' ')
 		{
 			AfxMessageBox(_T("Enter proper Name (albhabets only)"));
 			flag = 1;
@@ -137,4 +137,22 @@ void add_student_a::OnEnChangeEdit3()
 	// with the ENM_CHANGE flag ORed into the mask.
 
 	// TODO:  Add your control notification handler code here
+}
+
+BOOL add_student_a::OnInitDialog()
+{
+	CDialogEx::OnInitDialog();
+
+	// Set the icon for this dialog.  The framework does this automatically
+	//  when the application's main window is not a dialog
+	SetIcon(m_hIcon, TRUE);			// Set big icon
+	SetIcon(m_hIcon, FALSE);		// Set small icon
+
+	// TODO: Add extra initialization here
+	//Using built-in function for background image
+	SetBackgroundImage(IDB_BITMAP1);
+	HICON hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON1));
+	SetIcon(hIcon, FALSE);			// Set big icon
+	SetIcon(hIcon, TRUE);
+	return TRUE;  // return TRUE  unless you set the focus to a control
 }

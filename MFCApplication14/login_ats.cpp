@@ -51,6 +51,7 @@ BEGIN_MESSAGE_MAP(login_ats, CDialogEx)
 	ON_BN_CLICKED(IDC_ADMIN, &login_ats::OnBnClickedAdmin)
 	ON_BN_CLICKED(IDC_FACULTY, &login_ats::OnBnClickedFaculty)
 	ON_BN_CLICKED(IDC_STUDENT, &login_ats::OnBnClickedStudent)
+	ON_EN_CHANGE(IDC_USERNAME, &login_ats::OnEnChangeUsername)
 END_MESSAGE_MAP()
 
 
@@ -58,8 +59,9 @@ void login_ats::OnBnClickedLogin()
 {
 	bool login_allowed = FALSE;
 	DatabaseWrapper *db = new DatabaseWrapper();
-	Person type=Person::ADMIN;
+	Person type=Person::NONE;
 	// TODO: Add your control notification handler code here
+	
 	if (admin == TRUE)
 	{
 		type = Person::ADMIN; login_allowed = TRUE;
@@ -80,37 +82,40 @@ void login_ats::OnBnClickedLogin()
 	const TCHAR* pstring = (LPCTSTR)password_cstring;
 	UpdateData(FALSE);
 	login_allowed = db->checkLogin(roll_id, password_cstring, type);
+	if (type != Person::NONE)
+	{
 
-	if (login_allowed == TRUE)
-	{		
-		roll_number = roll_id;
-    		if (type == Person::ADMIN)
+		if (login_allowed == TRUE)
 		{
-			dashboard_a admin;
-			admin.DoModal();
-	
-			EndDialog(0);
-		}
-		else if (type == Person::PROF)
-		{
-			dashboard_t prof;
-			prof.DoModal();
+			roll_number = roll_id;
+			if (type == Person::ADMIN)
+			{
+				dashboard_a admin;
+				admin.DoModal();
 
-			EndDialog(0);
+				EndDialog(0);
+			}
+			else if (type == Person::PROF)
+			{
+				dashboard_t prof;
+				prof.DoModal();
+
+				EndDialog(0);
+			}
+			else
+			{
+				dashboard_s student;
+				student.DoModal();
+
+				EndDialog(0);
+			}
 		}
 		else
-		{
-			dashboard_s student;
-			student.DoModal();
-	
-			EndDialog(0);
-		}
-	}
-	else
-		MessageBox(_T("Enter valid username and password"));
+			MessageBox(_T("Enter valid username and password"));
 
-	delete db;
-}
+		delete db;
+	}
+	}
 
 
 void login_ats::OnBnClickedAdmin()
@@ -137,4 +142,32 @@ void login_ats::OnBnClickedStudent()
 	admin = FALSE;
 	prof = FALSE;
 	student = TRUE;
+}
+
+BOOL login_ats::OnInitDialog()
+{
+	CDialogEx::OnInitDialog();
+
+	// Set the icon for this dialog.  The framework does this automatically
+	//  when the application's main window is not a dialog
+	SetIcon(m_hIcon, TRUE);			// Set big icon
+	SetIcon(m_hIcon, FALSE);		// Set small icon
+	GetDlgItem(IDC_USERNAME)->SetWindowTextW(L" ");
+	// TODO: Add extra initialization here
+	//Using built-in function for background image
+	SetBackgroundImage(IDB_BITMAP1);
+	HICON hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON1));
+	SetIcon(hIcon, FALSE);			// Set big icon
+	SetIcon(hIcon, TRUE);
+	return TRUE;  // return TRUE  unless you set the focus to a control
+}
+
+void login_ats::OnEnChangeUsername()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialogEx::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
 }

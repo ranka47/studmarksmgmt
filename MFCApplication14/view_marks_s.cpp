@@ -7,9 +7,11 @@
 #include "afxdialogex.h"
 #include "ObjectDefinitions.h"
 #include<stdlib.h>
+#include <stack>
 
 
 // view_marks_s dialog
+stack<CStatic*> useless2;
 
 IMPLEMENT_DYNAMIC(view_marks_s, CDialogEx)
 
@@ -75,6 +77,13 @@ void view_marks_s::OnBnClickedCancel2()
 	CString courseName("");
 	cmb->GetLBText(selIndex, courseName);
 	
+	while (!useless2.empty())
+	{
+		CStatic *tmp = useless2.top();
+		useless2.pop();
+		tmp->SetWindowTextW(L"");
+	}
+
 	const size_t newsizew = (courseName.GetLength() + 1) * 2;
 	char *nstringw = new char[newsizew];
 	size_t convertedCharsw = 0;
@@ -83,7 +92,7 @@ void view_marks_s::OnBnClickedCancel2()
 		
 	int size = db->getNumberQuiz(courseId);
 	int quizzes = size;
-	int left = 250, top = 30, right = 500, bottom = 100, origtop = top, origbot = bottom;
+	int left = 300, top = 60, right = 500, bottom = 100, origtop = top, origbot = bottom;
 
 	for (int i = 0; i < quizzes; i++){
 
@@ -101,12 +110,13 @@ void view_marks_s::OnBnClickedCancel2()
 		CString quizz;
 		int marks = db->getStudQuizMarks(courseId, roll_number, (i+1));
 		if (marks >= 0)
-			quizz.Format(_T("Quiz %d : %d Marks"), i + 1, marks);
+			quizz.Format(_T("Quiz %d : %d out of %d Marks"), i + 1, marks, db->getQuizWeight(i+1, courseId));
 		else
 			quizz.Format(_T("Quiz %d : NA"), i + 1);
 		CStatic *label;
 		label = new CStatic;
 		label->Create(quizz, WS_CHILD | WS_VISIBLE, CRect(left - 60, top, right - 60, bottom), this, 90210);		
+		useless2.push(label);
 		top += 25;	bottom += 25;		
 	}
 	CString t("");
@@ -115,6 +125,7 @@ void view_marks_s::OnBnClickedCancel2()
 		CStatic *label;
 		label = new CStatic;
 		label->Create(t, WS_CHILD | WS_VISIBLE, CRect(left - 60, top, right - 60, bottom), this, 90210);
+		useless2.push(label);
 		top += 25;	bottom += 25;
 	}
 }
@@ -141,4 +152,22 @@ void view_marks_s::OnBnClickedCancel()
 {
 	// TODO: Add your control notification handler code here
 	EndDialog(0);
+}
+
+BOOL view_marks_s::OnInitDialog()
+{
+	CDialogEx::OnInitDialog();
+
+	// Set the icon for this dialog.  The framework does this automatically
+	//  when the application's main window is not a dialog
+	SetIcon(m_hIcon, TRUE);			// Set big icon
+	SetIcon(m_hIcon, FALSE);		// Set small icon
+
+	// TODO: Add extra initialization here
+	//Using built-in function for background image
+	SetBackgroundImage(IDB_BITMAP1);
+	HICON hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON1));
+	SetIcon(hIcon, FALSE);			// Set big icon
+	SetIcon(hIcon, TRUE);
+	return TRUE;  // return TRUE  unless you set the focus to a control
 }

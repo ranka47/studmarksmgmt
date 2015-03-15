@@ -15,6 +15,10 @@ public:
 	enum { IDD = t_dashboard };
 
 protected:
+	HICON m_hIcon;
+
+	// Generated message map functions
+	virtual BOOL OnInitDialog();
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
@@ -22,4 +26,6 @@ public:
 	afx_msg void OnBnClickedUpdate();
 	afx_msg void OnBnClickedAddcourse();
 	afx_msg void OnBnClickedLogout();
+	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedButton2();
 };
